@@ -20,6 +20,11 @@ Rails.application.routes.draw do
   authenticated :admin_user do
     root to: "admins#index", as: :admin_root
   end
+  resources :categories, only: [:show]
+  resources :products, only: [:show]
 
   get "admin" => "admin#index"
+  get "admins" => "admin#index"
+  get "cart", to: "carts#show"
+  post "checkout", to: "checkouts#create"
 end
