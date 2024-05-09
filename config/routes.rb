@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :admin do
     resources :orders
-    
+
     resources :products do
       resources :stocks
     end
@@ -27,4 +27,7 @@ Rails.application.routes.draw do
   get "admins" => "admin#index"
   get "cart", to: "carts#show"
   post "checkout", to: "checkouts#create"
+  get "cart/success", to: "checkouts#success"
+  get "cart/cancel", to: "checkouts#cancel"
+  post "webhooks", to: "webhooks#stripe"
 end
