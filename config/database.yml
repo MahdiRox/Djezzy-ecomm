@@ -19,7 +19,8 @@ development:
 test:
   <<: *default
   database: storage/test.sqlite3
-
+  timezone: 'Africa/Algiers'
 production:
   <<: *default
   database: storage/production.sqlite3
+  timezone: 'Africa/Algiers'

@@ -17,7 +17,7 @@ Rails.application.configure do
   # Enable server timing
   config.server_timing = true
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
@@ -62,10 +62,13 @@ Rails.application.configure do
   config.active_job.verbose_enqueue_logs = true
 
   config.assets.debug = true
+  config.hosts.clear
 
   # Suppress logger output for asset requests.
-        config.assets.quiet = true
-
+  config.assets.quiet = true
+  # Allow web console from a specific IP
+  
+  config.web_console.whiny_requests = false
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
@@ -76,5 +79,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # Raise error when a before_action's only/except options reference missing actions
-      config.action_controller.raise_on_missing_callback_actions = true
+  config.action_controller.raise_on_missing_callback_actions = true
 end

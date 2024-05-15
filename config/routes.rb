@@ -30,4 +30,6 @@ Rails.application.routes.draw do
   get "cart/success", to: "checkouts#success"
   get "cart/cancel", to: "checkouts#cancel"
   post "webhooks", to: "webhooks#stripe"
+  post "webhooks/stripe", to: "webhooks#stripe"
+
 end

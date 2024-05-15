@@ -18,7 +18,6 @@ class WebhooksController < ApplicationController
       return
     rescue Stripe::SignatureVerificationError => e
       puts "Webhook signature verification failed."
-      status 400
       return
     end
 
@@ -31,7 +30,7 @@ class WebhooksController < ApplicationController
         address =
           "#{shipping_details["address"]["line1"]} #{shipping_details["address"]["city"]}, #{shipping_details["address"]["state"]} #{shipping_details["address"]["postal_code"]}"
       else
-        address = ""
+        address = ".."
       end
       order =
         Order.create!(
@@ -51,8 +50,7 @@ class WebhooksController < ApplicationController
         OrderProduct.create!(
           order: order,
           product_id: product_id,
-          quantity: item["quantity"],
-          size: product["metadata"]["size"]
+          quantity: item["quantity"]
         )
         Stock.find(product["metadata"]["product_stock_id"]).decrement!(
           :amount,
