@@ -19,6 +19,7 @@
           <div class="flex space-x-10">
             <%= link_to cart_path, class: "text-gray-500 hover:underline py-2 rounded-md text-md font-medium" do %>
               <%= icon 'fa-solid', 'shopping-cart' %>
+              <span class="cart-count" data-controller="cart" data-cart-target="count" ></span>
             <% end %>
           </div>
         </div>

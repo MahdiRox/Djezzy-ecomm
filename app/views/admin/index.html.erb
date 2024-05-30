@@ -7,7 +7,7 @@
         <div class="px-6 py-4">
           <div class="font-bold text-xl mb-2 text-white">Revenue</div>
           <p class="text-white text-base">
-            DZ <%= @quick_stats[:revenue] ? (@quick_stats[:revenue]).to_s : "0" %>
+            $ <%= @quick_stats[:revenue] ? (@quick_stats[:revenue]/100).to_s : "0" %>
           </p>
         </div>
       </div>
@@ -23,7 +23,7 @@
         <div class="px-6 py-4">
           <div class="font-bold text-xl mb-2 text-white">Average Sale</div>
           <p class="text-white text-base">
-            DZ <%= @quick_stats[:avg_sale] ? (@quick_stats[:avg_sale]).to_s : "0" %>
+            $ <%= @quick_stats[:avg_sale] ? (@quick_stats[:avg_sale]/100).to_s : "0" %>
           </p>
         </div>
       </div>
@@ -67,7 +67,7 @@
                   <%= link_to order.created_at.strftime("%A, %B %d, %Y, %H:%M"), admin_orders_path(order) %>
                 </td>
                 <td class="px-6 py-4 border-b border-gray-200">
-                  <%= link_to  (order.total/100).to_s, admin_orders_path(order)  %>
+                  <%= link_to  (order.total/100).to_s , admin_orders_path(order)  %> $
                 </td>
               </tr>
             <% end %>

@@ -42,12 +42,16 @@
                   <%= o.address %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 ">
-                  <%= o.total %>
+                  <%= (o.total.to_i / 100)  %> $
                 </td>
               </tr>
             <% end %>
           </tbody>
         </table>
+        <div class="mt-4">
+          <%== pagy_nav(@not_fulfilled_pagy) if @not_fulfilled_pagy.pages > 1 %>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -86,12 +90,16 @@
                   <%= o.address %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 ">
-                  <%= o.total %>
+                  <%= (o.total.to_i / 100)  %> $
                 </td>
               </tr>
             <% end %>
           </tbody>
         </table>
+        <div class="mt-4">
+          <%== pagy_nav(@fulfilled_pagy) if @fulfilled_pagy.pages > 1 %>
+        </div>
+        
       </div>
     </div>
   </div>

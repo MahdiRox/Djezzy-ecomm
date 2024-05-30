@@ -35,7 +35,7 @@ class WebhooksController < ApplicationController
       order =
         Order.create!(
           customer_email: session["customer_details"]["email"],
-          total: session["amount_total"],
+          total: session["amount_total"]  ,
           address: address,
           fulfilled: false
         )

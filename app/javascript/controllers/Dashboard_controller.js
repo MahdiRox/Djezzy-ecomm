@@ -6,7 +6,7 @@ Chart.register(...registerables)
 export default class extends Controller {
   static values = { revenue: Array }
   initialize() {
-    const data = this.revenueValue.map((item) => item[1])
+    const data = this.revenueValue.map((item) => item[1] / 100)
     const labels = this.revenueValue.map((item) => item[0])
     const ctx = document.getElementById('revenueChart')
     const chartInstance = new Chart(ctx, {

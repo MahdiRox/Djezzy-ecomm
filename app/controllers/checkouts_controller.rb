@@ -41,8 +41,13 @@ class CheckoutsController < ApplicationController
 
   def success
     render :success
+    reset_cart_in_local_storage
   end
   def cancel
     render :cancel
+  end
+  private
+  def reset_cart_in_local_storage
+    @reset_cart_js = "localStorage.removeItem('cart');"
   end
 end

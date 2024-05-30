@@ -1,19 +1,42 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 
 // Connects to data-controller="cart"
 export default class extends Controller {
-  initialize() {
+  static targets = ["count"]
 
+  handleCartUpdated(event) {
+    const cart = JSON.parse(localStorage.getItem("cart"))
+    if (!cart) {
+      this.updateCount(0)
+      return
+    }
+  
+    let totalItems = 0
+    for (let i = 0; i < cart.length; i++) {
+      const item = cart[i]
+      totalItems += item.quantity
+    }
+    this.updateCount(totalItems)
+  }
+
+  initialize() {
+    const event = new CustomEvent("cart:updated")
+    event.preventDefault()
     console.log("cart controller initialized")
     const cart = JSON.parse(localStorage.getItem("cart"))
     if (!cart) {
+      this.updateCount(0)
       return
     }
-
+    
+    let totalItems = 0
     let total = 0
     for (let i=0; i < cart.length; i++) {
       const item = cart[i]
+      
       total += item.price * item.quantity
+      totalItems += item.quantity
       const div = document.createElement("div")
       div.classList.add("mt-2")
       div.innerText = `Item: ${item.name} - $${item.price} - Quantity: ${item.quantity}`
@@ -25,29 +48,63 @@ export default class extends Controller {
       deleteButton.addEventListener("click", this.removeFromCart)
       div.appendChild(deleteButton)
       this.element.prepend(div)
+      const addOneButton = document.createElement("button")
+      addOneButton.innerText = "add one"
+      addOneButton.value = JSON.stringify({id: item.id})
+      addOneButton.classList.add("bg-gray-500", "rounded", "text-white", "px-2", "py-1", "ml-2")
+
+      addOneButton.addEventListener("click", this.addOneToCart)
+      div.appendChild(addOneButton)
+
     }
+    this.updateCount(totalItems)
 
     const totalEl = document.createElement("div")
     totalEl.innerText= `Total: $${total}`
     let totalContainer = document.getElementById("total")
-    totalContainer.appendChild(totalEl)
+    if (totalContainer) {
+      totalContainer.appendChild(totalEl)
+    } else {
+      console.error('Element with ID "total" not found')
+    }
+    window.addEventListener("cart:updated", this.handleCartUpdated.bind(this))
+  }
+  updateCount(count) {
+    this.countTarget.textContent = count
   }
 
-  clear() {
+  clearCart() {
     localStorage.removeItem("cart")
-    window.location.reload()
+    Turbo.visit(window.location)
   }
 
   removeFromCart(event) {
     const cart = JSON.parse(localStorage.getItem("cart"))
     const values = JSON.parse(event.target.value)
-    const {id, size} = values
+    const {id} = values
     const index = cart.findIndex(item => item.id === id)
     if (index >= 0) {
-      cart.splice(index, 1)
+      const item = cart[index]
+      item.quantity -= 1
+      if (item.quantity <= 0) {
+        cart.splice(index, 1)
+      }
     }
     localStorage.setItem("cart", JSON.stringify(cart))
-    window.location.reload()
+    
+    Turbo.visit(window.location)
+  }
+  addOneToCart(event) {
+    const cart = JSON.parse(localStorage.getItem("cart"))
+    const values = JSON.parse(event.target.value)
+    const {id} = values
+    const index = cart.findIndex(item => item.id === id)
+    if (index >= 0) {
+      const item = cart[index]
+      item.quantity += 1
+    }
+    localStorage.setItem("cart", JSON.stringify(cart))
+    Turbo.visit(window.location)
   }
 
   checkout() {
@@ -70,6 +127,7 @@ export default class extends Controller {
         if (response.ok) {
           response.json().then(body => {
             if (body.url) {
+              localStorage.removeItem("cart")
               window.location.href = body.url; // Navigate to success URL
             } else if (body.error) {
               // Handle potential error response even when response.ok is true
