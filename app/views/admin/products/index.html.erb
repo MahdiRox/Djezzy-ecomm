@@ -8,11 +8,11 @@
   </div>
   <div class="flex mt-4 flex-col md:flex-row items-start md:items-center  w-full">
     <%= form_with url: admin_products_path, method: :get, class:"flex" do |f| %>
-    <%= f.text_field :query, placeholder: "Search products", class: "rounded border-gray-500 text-gray-800" %>
-    <%= f.submit "Search", class: "bg-gray-500  cursor-pointer  ml-2 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
+      <%= f.text_field :query, placeholder: "Search products", class: "rounded border-gray-500 text-gray-800" %>
+      <%= f.submit "Search", class: "bg-gray-500  cursor-pointer  ml-2 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
     <% end %>
     <%= form_with url: admin_products_path, method: :get, class: "flex" do |f| %>
-    <%= f.submit "Clear", class: "bg-gray-500  cursor-pointer  ml-2 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
+      <%= f.submit "Clear", class: "bg-gray-500  cursor-pointer  ml-2 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
     <% end %>
   </div>
   <div class="flex flex-col w-full" >
@@ -44,11 +44,14 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 underline ">
                     <%= link_to p.name, edit_admin_product_path(p) %>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 ">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 truncate max-w-xs">
                     <%= p.description %>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 ">
-                    <%= (p.price).to_s %> $
+                    <% if p.price %>
+                      <%=  number_to_currency(p.price.to_f , delimiter: ",", separator: ".", unit: "DZ ") %>
+                    <% end %>
+                    
                   </td>
                 </tr>
               <% end %>
@@ -56,8 +59,7 @@
           </table>
           <div class="mt-4">
             <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
-          </div> 
-          
+          </div>
         </div>
       </div>
     </div>

@@ -32,14 +32,17 @@ export default class extends Controller {
     
     let totalItems = 0
     let total = 0
-    for (let i=0; i < cart.length; i++) {
+    for (let i = 0; i < cart.length; i++) {
       const item = cart[i]
       
       total += item.price * item.quantity
       totalItems += item.quantity
       const div = document.createElement("div")
       div.classList.add("mt-2")
-      div.innerText = `Item: ${item.name} - $${item.price} - Quantity: ${item.quantity}`
+      div.innerText = `Item: ${item.name} - ${item.price.toLocaleString(
+        "fr-DZ",
+        { style: "currency", currency: "DZD" }
+      )} - Quantity: ${item.quantity}`;
       const deleteButton = document.createElement("button")
       deleteButton.innerText = "Remove"
       console.log("item.id: ", item.id)
@@ -60,7 +63,11 @@ export default class extends Controller {
     this.updateCount(totalItems)
 
     const totalEl = document.createElement("div")
-    totalEl.innerText= `Total: $${total}`
+  
+    totalEl.innerText = `Total: ${total.toLocaleString("fr-DZ", {
+      style: "currency",
+      currency: "DZD",
+    })}`;
     let totalContainer = document.getElementById("total")
     if (totalContainer) {
       totalContainer.appendChild(totalEl)

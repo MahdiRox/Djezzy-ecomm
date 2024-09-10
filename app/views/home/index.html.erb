@@ -10,10 +10,11 @@
     <%= link_to category_path(category) do %>
       <div class="flex flex-col mb-4">
         <h2 class="text-gray-800 font-medium text-lg text-center mb-6"><%= category.name %></h2>
-        <%= category.image.present? ? image_tag(category.image, class: "max-w-lg") : image_tag("http://via.placeholder.com/512") %>
+        <%= category.image.present? ? image_tag(category.image, class: " w-72 h-96 ") : image_tag("http://via.placeholder.com/512x512", class: "object-cover w-96 h-96 object-fit") %>
       </div>
     <% end %>
   <% end %>
+</div>
 </div>
 <div class="bg-gray-100 py-20 my-10">
   <div class="container mx-auto px-6">
@@ -52,10 +53,9 @@
         </div>
       </div>
     </div>
-
-      </div>
-    </div>
   </div>
+</div>
+</div>
 </div>
 <div class="bg-red-600 text-white my-10 text-center py-20">
   <h2 class="text-3xl font-bold mb-6">Stay Updated</h2>
